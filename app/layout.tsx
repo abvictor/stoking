@@ -5,6 +5,7 @@ import Sidebar from "./_components/sidebar";
 import { Inter } from "next/font/google"
 
 import "./globals.css";
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -30,6 +31,7 @@ export default function RootLayout({
           <Sidebar/>
           {children}
         </div>
+        <Toaster position="top-right" richColors/>
       </body>
     </html>
   );
