@@ -1,6 +1,6 @@
 "use client"
-import { createProduct } from "@/app/_actions/product/create-product";
-import { createProductSchema, CreateProductSchema } from "@/app/_actions/product/create-product/schema";
+import { upsertProduct } from "@/app/_actions/product/upsert-product";
+import { upsertProductSchema, UpsertProductSchema } from "@/app/_actions/product/upsert-product/schema";
 import { Button } from "@/app/_components/ui/button";
 import { DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/app/_components/ui/dialog";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/app/_components/ui/form";
@@ -12,24 +12,31 @@ import { NumericFormat } from "react-number-format";
 
 
 interface UpsertProductDialogContentProps {
-    onSuccess?: () => void;
+  onSuccess?: () => void;
+  defaultValues?: UpsertProductSchema;
 }
 
-const UpsertProductDialogContent = ({onSuccess}: UpsertProductDialogContentProps) => {
-  const form = useForm<CreateProductSchema>({
-    resolver: zodResolver(createProductSchema),
+const UpsertProductDialogContent = ({
+  onSuccess,
+  defaultValues,
+}: UpsertProductDialogContentProps) => {
+  const form = useForm<UpsertProductSchema>({
+    resolver: zodResolver(upsertProductSchema),
     shouldUnregister: true,
-    defaultValues: {
+
+    defaultValues: defaultValues ?? {
       name: "",
       price: 0,
       stock: 1,
     },
   });
 
-  const onSubmit = async (data: CreateProductSchema) => {
+  const isEditing = !!defaultValues
+
+  const onSubmit = async (data: UpsertProductSchema) => {
     try {
-      await createProduct(data);
-      onSuccess?.()
+      await upsertProduct({...data, id: defaultValues?.id});
+      onSuccess?.();
     } catch (error) {
       console.log(error);
     }
@@ -40,7 +47,9 @@ const UpsertProductDialogContent = ({onSuccess}: UpsertProductDialogContentProps
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <DialogHeader>
-            <DialogTitle>Criar produto</DialogTitle>
+            <DialogTitle>
+              {isEditing ? "Editando produto" : "Criando produto"}
+            </DialogTitle>
             <DialogDescription>Insira as informações abaixo</DialogDescription>
           </DialogHeader>
 

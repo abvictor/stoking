@@ -1,11 +1,11 @@
 "use client"
+import { useState } from "react";
 
 import { PlusIcon } from "lucide-react";
 import { Button } from "../../_components/ui/button";
 import { Dialog, DialogTrigger} from "../../_components/ui/dialog";
 
 
-import { useState } from "react";
 import UpsertProductDialogContent from "./upsert-dialog-content";
 
 const CreateProductButton = () => {
