@@ -10,14 +10,13 @@ import { Button } from "@/app/_components/ui/button";
 
 import { ClipboardCopyIcon, EditIcon, MoreHorizontalIcon, Trash2Icon } from "lucide-react";
 
-
-
 interface ProductTableDropdownMenuProps{
   product: Product
 }
 
-const ProductDropdownMenu = ({ product }: ProductTableDropdownMenuProps) => {
-  const [editDialogOpen, setEditDialogOpen] = useState(false) 
+const ProductTableDropdownMenu = ({ product }: ProductTableDropdownMenuProps) => {
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  
     return (
         <AlertDialog>
           <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
@@ -69,4 +68,4 @@ const ProductDropdownMenu = ({ product }: ProductTableDropdownMenuProps) => {
       );
 }
 
-export default ProductDropdownMenu
+export default ProductTableDropdownMenu;

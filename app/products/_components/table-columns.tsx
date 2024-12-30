@@ -1,23 +1,10 @@
 "use client";
-import { useState } from "react";
+
 import { Badge } from "@/app/_components/ui/badge";
 import { Product } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/app/_components/ui/dropdown-menu"
-
-import { Button } from "@/app/_components/ui/button";
-import { ClipboardCopyIcon, EditIcon, MoreHorizontalIcon, Trash2Icon } from "lucide-react";
-import { AlertDialog, AlertDialogTrigger } from "@/app/_components/ui/alert-dialog";
-import DeleteProductDialogContent from "./delete-dialog-content";
-import UpsertProductDialogContent from "./upsert-dialog-content";
-import { Dialog, DialogTrigger } from "@/app/_components/ui/dialog";
-import ProductDropdownMenu from "./table-dropdown-menu";
+import ProductTableDropdownMenu from "./table-dropdown-menu";
 
 const getStatusLabel = (status: string) => {
     if(status === "IN_STOCK"){
@@ -66,7 +53,7 @@ export const productTableColumns: ColumnDef<Product>[] = [
   {
     accessorKey: "actions",
     header: "Ações",
-    cell: (row) => { <ProductDropdownMenu product={row.row.original} /> }
+    cell: (row) => <ProductTableDropdownMenu product={row.row.original} />
   },
 ];
 
