@@ -9,10 +9,11 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 import { formatCurrency } from "@/app/_helpers/currency"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Product } from "@prisma/client"
-import { PlusIcon } from "lucide-react"
+import { MoreHorizontalIcon, PlusIcon } from "lucide-react"
 import { useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import SalesTableDropdownMenu from "./table-dropdown-menu"
 
 
 const formSchema = z.object({
@@ -103,6 +104,14 @@ const UpsertSheetContent = ({ productOptions, products }: UpsertSheetContentProp
     }, [selectedProducts]);
 
 
+    const onDelete = (productId: number) => {
+      setSelectedProducts((currentProducts) => {
+        return currentProducts.filter((product) => product.id !== productId)
+      })
+    }
+
+
+
   return (
     <SheetContent className="!max-w-[700px]">
       <SheetHeader>
@@ -167,6 +176,7 @@ const UpsertSheetContent = ({ productOptions, products }: UpsertSheetContentProp
             <TableHead>Preço Unitário</TableHead>
             <TableHead>Quantidade</TableHead>
             <TableHead>Total</TableHead>
+            <TableHead>Ações</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -180,6 +190,9 @@ const UpsertSheetContent = ({ productOptions, products }: UpsertSheetContentProp
               <TableCell className="font-medium">
                 {formatCurrency(product.price * product.quantity)}
               </TableCell>
+              <TableCell>
+                <SalesTableDropdownMenu product={product} onDelete={onDelete} />
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -187,6 +200,7 @@ const UpsertSheetContent = ({ productOptions, products }: UpsertSheetContentProp
           <TableRow>
             <TableCell colSpan={3}>Total</TableCell>
             <TableCell>{formatCurrency(productsTotal)}</TableCell>
+            <TableCell></TableCell>
           </TableRow>
         </TableFooter>
       </Table>
