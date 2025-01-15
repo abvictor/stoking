@@ -18,54 +18,54 @@ const ProductTableDropdownMenu = ({ product }: ProductTableDropdownMenuProps) =>
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   
     return (
-        <AlertDialog>
-          <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost">
-                  <MoreHorizontalIcon size={16} />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem
-                  className="gap 1.5"
-                  onClick={() =>
-                    navigator.clipboard.writeText(String(product.id))
-                  }
-                >
-                  <ClipboardCopyIcon size={16} />
-                  Copiar ID
+      <AlertDialog>
+        <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost">
+                <MoreHorizontalIcon size={16} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem
+                className="gap 1.5"
+                onClick={() =>
+                  navigator.clipboard.writeText(String(product.id))
+                }
+              >
+                <ClipboardCopyIcon size={16} />
+                Copiar ID
+              </DropdownMenuItem>
+              <DialogTrigger asChild>
+                <DropdownMenuItem className="gap 1.5">
+                  <EditIcon size={16} />
+                  Editar produto
                 </DropdownMenuItem>
-                <DialogTrigger asChild>
-                  <DropdownMenuItem className="gap 1.5">
-                    <EditIcon size={16} />
-                    Editar produto
-                  </DropdownMenuItem>
-                </DialogTrigger>
-                <AlertDialogTrigger asChild>
-                  <DropdownMenuItem className="gap 1.5">
-                    <Trash2Icon size={16} />
-                    Deletar produto
-                  </DropdownMenuItem>
-                </AlertDialogTrigger>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <UpsertProductDialogContent
-              defaultValues={{
-                id: product.id,
-                name: product.name,
-                price: Number(product.price),
-                stock: product.stock,
-              }}
-              onSuccess={() => setEditDialogOpen(false)}
-            />
-            <DeleteProductDialogContent
-              name={product.name}
-              productId={product.id}
-            />
-          </Dialog>
-        </AlertDialog>
-      );
+              </DialogTrigger>
+              <AlertDialogTrigger asChild>
+                <DropdownMenuItem className="gap 1.5">
+                  <Trash2Icon size={16} />
+                  Deletar produto
+                </DropdownMenuItem>
+              </AlertDialogTrigger>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <UpsertProductDialogContent
+            defaultValues={{
+              id: product.id,
+              name: product.name,
+              price: Number(product.price),
+              stock: product.stock,
+            }}
+            setDialogIsOpen={setEditDialogOpen}
+          />
+          <DeleteProductDialogContent
+            name={product.name}
+            productId={product.id}
+          />
+        </Dialog>
+      </AlertDialog>
+    );
 }
 
 export default ProductTableDropdownMenu;

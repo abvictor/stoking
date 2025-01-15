@@ -9,7 +9,8 @@ import { Dialog, DialogTrigger} from "../../_components/ui/dialog";
 import UpsertProductDialogContent from "./upsert-dialog-content";
 
 const CreateProductButton = () => {
-    const [dialogIsOpen, setDialogIsOpen] = useState(false);
+  const [dialogIsOpen, setDialogIsOpen] = useState(false);
+  
   return (
     <Dialog open={dialogIsOpen} onOpenChange={setDialogIsOpen}>
       <DialogTrigger asChild>
@@ -18,7 +19,7 @@ const CreateProductButton = () => {
           Novo Produto
         </Button>
       </DialogTrigger>
-      <UpsertProductDialogContent onSuccess={() => setDialogIsOpen(false)}/>
+      <UpsertProductDialogContent setDialogIsOpen={setDialogIsOpen}/>
     </Dialog>
   );
 };
