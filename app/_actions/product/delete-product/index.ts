@@ -1,14 +1,17 @@
-"use server"
+"use server";
 
 import { db } from "@/app/_lib/prisma";
-import { DeleteProductSchema } from "./schema";
-import { revalidateTag } from "next/cache";
+import { deleteProductSchema } from "./schema";
+import { revalidatePath } from "next/cache";
+import { actionClient } from "@/app/_lib/safe-actions";
 
-export const deleteProduct = async ({id}: DeleteProductSchema) => {
-  await db.product.delete({
-    where: {
-      id,
-    },
+export const deleteProduct = actionClient
+  .schema(deleteProductSchema)
+  .action(async ({ parsedInput: { id } }) => {
+    await db.product.delete({
+      where: {
+        id,
+      },
+    });
+    revalidatePath("/", "layout");
   });
-  revalidateTag("get-products");
-};

@@ -8,6 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/app/_components/ui/alert-dialog";
+import { useAction } from "next-safe-action/hooks";
 import { toast } from "sonner";
 
 
@@ -17,25 +18,25 @@ interface DeleteProductProps {
 }
 
 const DeleteProductDialogContent = ({name, productId}: DeleteProductProps) => {
-  const handleDeleteClick = async () => {
-    try {
-      await deleteProduct({ id: productId });
-      toast.success("Produto excluído com sucesso")
-    } catch (error) {
-      console.error(error);
-      toast.error("Ocorreu um erro ao excluir o produto");
+  const { execute: executeDeleteProduct } = useAction(deleteProduct, {
+    onSuccess: () => {
+      toast.success("Produto excluído com sucesso.")
+    },
+    onError: () => {
+      toast.error("Ocorreu um erro ao excluir o produto.");
     }
-  };
+  })
+
+  const handleDeleteClick = () => executeDeleteProduct({id: productId});
+  
   return (
     <AlertDialogContent>
       <AlertDialogHeader>
         <AlertDialogTitle>
-          Deseja realmente <b>excluir</b> o produto{" "}
-          <b>{name.toLocaleUpperCase()}</b>?
+          Deseja realmente <b>excluir</b> o produto{" "}<b>{name.toLocaleUpperCase()}</b>?
         </AlertDialogTitle>
         <AlertDialogDescription>
-          Esta ação de exclusão pode ser irreversível, deseja realmente
-          continuar?
+          Esta ação de exclusão pode ser irreversível, deseja realmente continuar?
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
