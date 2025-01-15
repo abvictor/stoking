@@ -10,12 +10,14 @@ import { formatCurrency } from "@/app/_helpers/currency"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Product } from "@prisma/client"
 import { CheckCheckIcon, PlusIcon } from "lucide-react"
-import { useMemo, useState } from "react"
+import { Dispatch, SetStateAction, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import SalesTableDropdownMenu from "./table-dropdown-menu"
-import { createSale } from "@/app/_actions/sale/create-sale"
+import { upsertSale } from "@/app/_actions/sale/upsert-sale"
 import { toast } from "sonner"
+import { useAction } from 'next-safe-action/hooks'
+import { flattenValidationErrors } from "next-safe-action"
 
 
 const formSchema = z.object({
@@ -27,10 +29,11 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>
 
-interface UpsertSheetContentProps{
-    products: Product[];
-    productOptions: ComboboxOption[];
-    onSubmitSuccess: () => void;
+interface UpsertSheetContentProps {
+  products: Product[];
+  productOptions: ComboboxOption[];
+  onSubmitSuccess: () => void;
+  setSheetIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 interface SelectedProduct {
@@ -43,11 +46,22 @@ interface SelectedProduct {
 const UpsertSheetContent = ({
   productOptions,
   products,
-  onSubmitSuccess,
+  setSheetIsOpen,
 }: UpsertSheetContentProps) => {
-  const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(
-    [],
-  );
+
+  const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>([]);
+  const { execute: executeCreateSale } = useAction(upsertSale, {
+    onError: ({ error: { validationErrors, serverError } }) => {
+      const flattenedErrors = flattenValidationErrors(validationErrors);
+      toast.error(serverError ?? flattenedErrors.formErrors[0]);
+    },
+    onSuccess: () => {
+      toast.success("Venda realizada com sucesso.");
+      setSheetIsOpen(false);
+    },
+  });
+
+
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -118,16 +132,12 @@ const UpsertSheetContent = ({
   };
 
   const onSubmitSale = async () => {
-    try {
-      await createSale({
-        products: selectedProducts.map((product) => ({
-          id: product.id,
-          quantity: product.quantity,
-        })),
-      });
-      toast.success("Venda realizada com sucesso.");
-      onSubmitSuccess()
-    } catch (error) {}
+    executeCreateSale({
+      products: selectedProducts.map((product) => ({
+        id: product.id,
+        quantity: product.quantity
+      }))
+    })
   };
 
   return (
