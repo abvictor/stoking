@@ -10,7 +10,7 @@ interface SaleProductDto {
 }
 
 export interface SaleDto {
-  id: string;
+  id: number;
   productNames: string;
   totalProducts: number;
   totalAmount: number;
@@ -26,6 +26,7 @@ export const getSales = async (): Promise<SaleDto[]> => {
       },
     },
   });
+
   return sales.map((sale) => ({
     id: sale.id,
     date: sale.date,

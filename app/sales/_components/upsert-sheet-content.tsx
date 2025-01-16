@@ -13,11 +13,11 @@ import { CheckCheckIcon, PlusIcon } from "lucide-react"
 import { Dispatch, SetStateAction, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import SalesTableDropdownMenu from "./table-dropdown-menu"
 import { upsertSale } from "@/app/_actions/sale/upsert-sale"
 import { toast } from "sonner"
 import { useAction } from 'next-safe-action/hooks'
 import { flattenValidationErrors } from "next-safe-action"
+import UpsertSaleDropdownMenu from "./upsert-table-dropdown-menu"
 
 
 const formSchema = z.object({
@@ -37,10 +37,10 @@ interface UpsertSheetContentProps {
 }
 
 interface SelectedProduct {
-    id: number;
-    name: string;
-    price: number;
-    quantity: number;
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
 }
 
 const UpsertSheetContent = ({
@@ -60,8 +60,6 @@ const UpsertSheetContent = ({
       setSheetIsOpen(false);
     },
   });
-
-
 
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -129,6 +127,7 @@ const UpsertSheetContent = ({
     setSelectedProducts((currentProducts) => {
       return currentProducts.filter((product) => product.id !== productId);
     });
+    console.log('bbb',productId)
   };
 
   const onSubmitSale = async () => {
@@ -139,6 +138,8 @@ const UpsertSheetContent = ({
       }))
     })
   };
+
+  console.log(products)
 
   return (
     <SheetContent className="!max-w-[700px]">
@@ -219,7 +220,7 @@ const UpsertSheetContent = ({
                 {formatCurrency(product.price * product.quantity)}
               </TableCell>
               <TableCell>
-                <SalesTableDropdownMenu product={product} onDelete={onDelete} />
+                <UpsertSaleDropdownMenu product={product} onDelete={onDelete} />
               </TableCell>
             </TableRow>
           ))}
