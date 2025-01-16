@@ -19,9 +19,6 @@ const UpsertSaleTableDropdownMenu = ({
   product,
   onDelete,
 }: UpsertSaleTableDropdownMenuProps) => {
-
-  console.log('aaa', product)
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

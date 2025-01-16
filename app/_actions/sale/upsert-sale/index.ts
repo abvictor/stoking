@@ -31,6 +31,7 @@ export const upsertSale = actionClient
           });
         }
       }
+
       const sale = await trx.sale.create({
         data: {
           date: new Date(),
@@ -74,4 +75,5 @@ export const upsertSale = actionClient
       }
     });
     revalidatePath("/", "layout");
+    revalidatePath("/sales")
   });

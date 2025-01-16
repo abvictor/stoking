@@ -9,10 +9,12 @@ const Sales = async () => {
 
   const sales = await getSales();
   const products = await getProducts();
+
   const productOptions: ComboboxOption[] = products.map((product) => ({
     label: product.name,
     value: String(product.id),
   }));
+  
   const tableData = sales.map((sale) => ({
     ...sale,
     products,

@@ -30,10 +30,12 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>
 
 interface UpsertSheetContentProps {
+  saleId?: number;
   products: Product[];
   productOptions: ComboboxOption[];
   onSubmitSuccess: () => void;
   setSheetIsOpen: Dispatch<SetStateAction<boolean>>;
+  defaultSelectedProducts?: SelectedProduct[];
 }
 
 interface SelectedProduct {
@@ -44,12 +46,14 @@ interface SelectedProduct {
 }
 
 const UpsertSheetContent = ({
+  saleId,
   productOptions,
   products,
   setSheetIsOpen,
+  defaultSelectedProducts
 }: UpsertSheetContentProps) => {
-
-  const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<SelectedProduct[]>(defaultSelectedProducts ?? []);
+  
   const { execute: executeCreateSale } = useAction(upsertSale, {
     onError: ({ error: { validationErrors, serverError } }) => {
       const flattenedErrors = flattenValidationErrors(validationErrors);
@@ -127,19 +131,18 @@ const UpsertSheetContent = ({
     setSelectedProducts((currentProducts) => {
       return currentProducts.filter((product) => product.id !== productId);
     });
-    console.log('bbb',productId)
+    console.log("bbb", productId);
   };
 
   const onSubmitSale = async () => {
     executeCreateSale({
+      id: saleId,
       products: selectedProducts.map((product) => ({
         id: product.id,
-        quantity: product.quantity
-      }))
-    })
+        quantity: product.quantity,
+      })),
+    });
   };
-
-  console.log(products)
 
   return (
     <SheetContent className="!max-w-[700px]">
