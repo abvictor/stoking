@@ -21,7 +21,7 @@ import { ProductDto } from "@/app/_data-access/product/get-product"
 
 
 const formSchema = z.object({
-    productId: z.coerce.number({
+    productId: z.coerce.string({
         message: "O produto é obrigatório"
     }),
     quantity: z.coerce.number().int().positive()
@@ -76,7 +76,7 @@ const UpsertSheetContent = ({
 
   const onSubmit = (data: FormSchema) => {
     const selectedProduct = products.find(
-      (product) => product.id === data.productId,
+      (product) => Number(product.id) === Number(data.productId),
     );
     if (!selectedProduct) return;
     setSelectedProducts((currentProducts) => {
@@ -132,7 +132,6 @@ const UpsertSheetContent = ({
     setSelectedProducts((currentProducts) => {
       return currentProducts.filter((product) => product.id !== productId);
     });
-    console.log("bbb", productId);
   };
 
   const onSubmitSale = async () => {
