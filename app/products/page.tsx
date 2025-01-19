@@ -4,10 +4,16 @@ import { productTableColumns } from "./_components/table-columns";
 import { getProducts } from "../_data-access/product/get-product";
 import CreateProductButton from "./_components/create-product-button";
 import Header, { HeaderLeft, HeaderRight, HeaderSubtitle, HeaderTitle } from "../_components/header";
+import { Metadata } from "next";
 
 
 
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+  title: "Stoking - Gestão de Produtos",
+  description: "Gerenciamento de produtos",
+};
 
 const ProductsPage = async () => {
     const products = await getProducts();

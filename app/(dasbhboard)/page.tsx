@@ -15,6 +15,12 @@ import { Skeleton } from "../_components/ui/skeleton";
 import MostSoldProducts, {
   MostSoldProductsSkeleton,
 } from "./_components/most-sold-products";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Stoking - Página Inicial',
+  description: 'Página inicial'
+}
 
 export const dynamic = "force-dynamic";
 
