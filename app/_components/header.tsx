@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 export const HeaderTitle = ({children}: {children: ReactNode}) => {
-    return <h2 className="text-xl font-semibold">{children}</h2>;
+  return <h2 className="text-xl font-semibold">{children}</h2>;
 }
 
 export const HeaderSubtitle = ({ children }: { children: ReactNode }) => {
@@ -11,6 +11,7 @@ export const HeaderSubtitle = ({ children }: { children: ReactNode }) => {
 export const HeaderLeft = ({ children }: { children: ReactNode }) => {
   return <div>{children}</div>;
 };
+
 export const HeaderRight = ({ children }: { children: ReactNode }) => {
   return <div>{children}</div>;
 };

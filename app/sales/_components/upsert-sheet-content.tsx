@@ -8,9 +8,8 @@ import { SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle } 
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/app/_components/ui/table"
 import { formatCurrency } from "@/app/_helpers/currency"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Product } from "@prisma/client"
 import { CheckCheckIcon, PlusIcon } from "lucide-react"
-import { Dispatch, SetStateAction, useMemo, useState } from "react"
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { upsertSale } from "@/app/_actions/sale/upsert-sale"
@@ -18,6 +17,7 @@ import { toast } from "sonner"
 import { useAction } from 'next-safe-action/hooks'
 import { flattenValidationErrors } from "next-safe-action"
 import UpsertSaleDropdownMenu from "./upsert-table-dropdown-menu"
+import { ProductDto } from "@/app/_data-access/product/get-product"
 
 
 const formSchema = z.object({
@@ -30,10 +30,10 @@ const formSchema = z.object({
 type FormSchema = z.infer<typeof formSchema>
 
 interface UpsertSheetContentProps {
+  isOpen: boolean;
   saleId?: number;
-  products: Product[];
+  products: ProductDto[];
   productOptions: ComboboxOption[];
-  onSubmitSuccess: () => void;
   setSheetIsOpen: Dispatch<SetStateAction<boolean>>;
   defaultSelectedProducts?: SelectedProduct[];
 }
@@ -46,6 +46,7 @@ interface SelectedProduct {
 }
 
 const UpsertSheetContent = ({
+  isOpen,
   saleId,
   productOptions,
   products,
@@ -143,6 +144,17 @@ const UpsertSheetContent = ({
       })),
     });
   };
+
+  useEffect(() => {
+    if (!isOpen) {
+      setSelectedProducts([]);
+    }
+    form.reset()
+  }, [isOpen, form]);
+
+ useEffect(() => {
+    setSelectedProducts(defaultSelectedProducts ?? []);
+ },[defaultSelectedProducts]) 
 
   return (
     <SheetContent className="!max-w-[700px]">

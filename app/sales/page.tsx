@@ -23,7 +23,7 @@ const Sales = async () => {
   }));
 
     return (
-      <div className="w-full space-y-2 p-8">
+      <div className="w-full space-y-2 p-8 overflow-auto">
         <Header>
           <HeaderLeft>
             <HeaderSubtitle>Gestão de vendas</HeaderSubtitle>
