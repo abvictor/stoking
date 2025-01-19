@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Product } from "@prisma/client";
 
 import { AlertDialog, AlertDialogTrigger } from "@/app/_components/ui/alert-dialog";
 import { Dialog, DialogTrigger } from "@/app/_components/ui/dialog";
@@ -9,9 +8,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Button } from "@/app/_components/ui/button";
 
 import { ClipboardCopyIcon, EditIcon, MoreHorizontalIcon, Trash2Icon } from "lucide-react";
+import { ProductDto } from "@/app/_data-access/product/get-product";
 
-interface ProductTableDropdownMenuProps{
-  product: Product
+interface ProductTableDropdownMenuProps {
+  product: ProductDto;
 }
 
 const ProductTableDropdownMenu = ({ product }: ProductTableDropdownMenuProps) => {

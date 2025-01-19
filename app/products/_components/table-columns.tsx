@@ -1,20 +1,11 @@
 "use client";
 
-import { Badge } from "@/app/_components/ui/badge";
-import { Product } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
-
 import ProductTableDropdownMenu from "./table-dropdown-menu";
+import { ProductDto } from "@/app/_data-access/product/get-product";
+import ProductStatusBadge from "@/app/_components/product-status-badge";
 
-const getStatusLabel = (status: string) => {
-    if(status === "IN_STOCK"){
-        return 'Em estoque'
-    }else{
-        return "Fora de estoque";
-    }
-}
-
-export const productTableColumns: ColumnDef<Product>[] = [
+export const productTableColumns: ColumnDef<ProductDto>[] = [
   {
     accessorKey: "name",
     header: "Produto",
@@ -23,12 +14,12 @@ export const productTableColumns: ColumnDef<Product>[] = [
     accessorKey: "price",
     header: "Valor unitário",
     cell: (row) => {
-      const product = row.row.original
-      return  Intl.NumberFormat("pt-BR", {
+      const product = row.row.original;
+      return Intl.NumberFormat("pt-BR", {
         style: "currency",
-        currency: "BRL"
-      }).format(Number(product.price))
-    }
+        currency: "BRL",
+      }).format(Number(product.price));
+    },
   },
   {
     accessorKey: "stock",
@@ -37,17 +28,8 @@ export const productTableColumns: ColumnDef<Product>[] = [
   {
     accessorKey: "status",
     header: "Status",
-    cell: (row) => {
-      const product = row.row.original;
-      const label = getStatusLabel(product.status);
-      return (
-        <Badge
-          variant="default"
-          className={label === "Em estoque" ? "bg-green-500" : "bg-red-500"}
-        >
-          {label}
-        </Badge>
-      );
+    cell: ({ row: { original: product } }) => {
+      return <ProductStatusBadge status={product.status} />;
     },
   },
   {
@@ -56,4 +38,3 @@ export const productTableColumns: ColumnDef<Product>[] = [
     cell: (row) => <ProductTableDropdownMenu product={row.row.original} />
   },
 ];
-
